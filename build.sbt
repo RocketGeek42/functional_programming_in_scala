@@ -1,4 +1,4 @@
-name := "functional-programming-in-scala"
+name := "functional_programming_in_scala"
 
 version := "0.1"
 
