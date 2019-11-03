@@ -41,8 +41,13 @@ object List { //List companion object. Contains functions for creating and worki
       case Cons(_,t) => drop(t, n-1)
     }
 
-  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = ???
+  //3.5 Implement dropWhile, which removes elements from the List prefix as long as they match a predicate
+  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
+    case Cons(h,t) if f(h) => dropWhile(t)(f)
+    case _ => l
+  }
 
+  //3.6 Implement a function init, that returns a List consisting of all but the last element of a List
   def init[A](l: List[A]): List[A] = ???
 
 }
