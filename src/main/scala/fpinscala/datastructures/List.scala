@@ -30,13 +30,19 @@ object List { //List companion object. Contains functions for creating and worki
   //3.3 Using the same idea, implement the function setHead for replacing the first element of a List with a different value
   def setHead[A](list: List[A], head: A): List[A] = list match {
     case Nil => Nil
-    case Cons(_,t) => (head,t)
+    case Cons(_,t) => Cons(head,t)
   }
 
-  def drop[A](1: List[A], n: Int): List[A] = ???
+  //3.4 Generalize tail function to drop, which removes the first n elements from a list
+  def drop[A](l: List[A], n: Int): List[A] =
+    if (n <= 0) l //if n is less than or equal to 0 just return the list l
+  else l match {
+      case Nil => Nil
+      case Cons(_,t) => drop(t, n-1)
+    }
 
-  def dropWhile[A](1: List[A], f: A => Boolean): List[A] = ???
+  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = ???
 
-  def init[A](1: List[A]): List[A] = ???
+  def init[A](l: List[A]): List[A] = ???
 
 }
