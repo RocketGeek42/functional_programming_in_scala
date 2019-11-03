@@ -22,7 +22,7 @@ object List { //List companion object. Contains functions for creating and worki
 
   def tail[A](list: List[A]): List[A] = list match {
     case Nil => Nil
-    case Cons(h,t) => t
+    case Cons(_,t) => t
   }
 
   def setHead[A](list: List[A], head: A): List[A] = ???
