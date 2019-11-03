@@ -20,12 +20,18 @@ object List { //List companion object. Contains functions for creating and worki
     if (as.isEmpty) Nil
   else Cons(as.head, apply(as.tail: _*))
 
+  //3.2 Implement the function tail for removing the first element of a List
+  //function takes a constant time
   def tail[A](list: List[A]): List[A] = list match {
     case Nil => Nil
     case Cons(_,t) => t
   }
 
-  def setHead[A](list: List[A], head: A): List[A] = ???
+  //3.3 Using the same idea, implement the function setHead for replacing the first element of a List with a different value
+  def setHead[A](list: List[A], head: A): List[A] = list match {
+    case Nil => Nil
+    case Cons(_,t) => (head,t)
+  }
 
   def drop[A](1: List[A], n: Int): List[A] = ???
 
