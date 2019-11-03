@@ -20,4 +20,14 @@ object List { //List companion object. Contains functions for creating and worki
     if (as.isEmpty) Nil
   else Cons(as.head, apply(as.tail: _*))
 
+  def tail[A](list: List[A]): List[A] = ???
+
+  def setHead[A](list: List[A], head: A): List[A] = ???
+
+  def drop[A](1: List[A], n: Int): List[A] = ???
+
+  def dropWhile[A](1: List[A], f: A => Boolean): List[A] = ???
+
+  def init[A](1: List[A]): List[A] = ???
+
 }
