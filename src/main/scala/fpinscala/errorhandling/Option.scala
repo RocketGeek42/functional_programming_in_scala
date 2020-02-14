@@ -2,11 +2,14 @@ package errorhandling
 
 sealed trait Option[+A]{
   //4.1 Implement all preceding functions on Option
-  def map[B](f: A => B): Option[B] = ???
-  def flatMap[B](f: A => Option[B]): Option[B] = ???
-  def getOrElse[B >: A](default: => B): B = ???
-  def orElse[B >: A](ob: Option[B]): Option[B] = ???
-  def filter(f: A => Boolean): Option[A] = ???
+  def map[B](f: A => B): Option[B] = this match { //Apply f if the option is not None
+    case Some(a) => Some(f(a))
+    case None => None
+  }
+  def flatMap[B](f: A => Option[B]): Option[B] = ??? //Apply f, which may fail, to the Option if not None
+  def getOrElse[B >: A](default: => B): B = ??? //The B >: A says that the B type parameter must be a supertype of A
+  def orElse[B >: A](ob: Option[B]): Option[B] = ??? //Don't evaluate ob unless needed
+  def filter(f: A => Boolean): Option[A] = ??? //Convert Some to None if the value doesn't satisfy f.
 }
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
