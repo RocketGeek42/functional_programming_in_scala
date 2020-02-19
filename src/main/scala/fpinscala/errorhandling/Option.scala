@@ -19,6 +19,16 @@ sealed trait Option[+A]{
   def filter(f: A => Boolean): Option[A] = { //Convert Some to None if the value doesn't satisfy f.
     flatMap((a: A) => if(f(a)) Some(a) else None)
   }
+  //4.2 Implement the variance function in terms of flatmap.
+  //If the mean of a sequence is m, the variance is the mean of math.pow(x - m, 2) for each element x in the sequence.
+  def variance(xs: Seq[Double]): Option[Double] = ???
+
+  //4.3 Write a generic function map2 that combines two Option values using binary function.
+  //If either Option value is None, then return that value too.
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A,B) => C): Option[C] = ???
+
+  //4.4 Write a function sequence that combines a list of Options into one Option containing a list of all the Some values in original list.
+  def sequence[A](a: List[Option[A]]): Option[List[A]] = ???
 }
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
