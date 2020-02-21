@@ -21,11 +21,20 @@ sealed trait Option[+A]{
   }
   //4.2 Implement the variance function in terms of flatmap.
   //If the mean of a sequence is m, the variance is the mean of math.pow(x - m, 2) for each element x in the sequence.
-  def variance(xs: Seq[Double]): Option[Double] = ???
+  def mean(xs: Seq[Double]): Option[Double] = {
+    if(xs.isEmpty) None
+    else Some(xs.sum / xs.length)
+  }
+  def variance(xs: Seq[Double]): Option[Double] = {
+    mean(xs).flatMap(m => mean(xs.map(x => math.pow(x-m, 2))))
+  }
 
   //4.3 Write a generic function map2 that combines two Option values using binary function.
   //If either Option value is None, then return that value too.
-  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A,B) => C): Option[C] = ???
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A,B) => C): Option[C] = (a, b) match {
+    case (Some(a), Some(b)) => Some(f(a,b))
+    case _ => None
+  }
 
   //4.4 Write a function sequence that combines a list of Options into one Option containing a list of all the Some values in original list.
   def sequence[A](a: List[Option[A]]): Option[List[A]] = ???
