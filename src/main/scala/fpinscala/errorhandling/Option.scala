@@ -37,7 +37,10 @@ sealed trait Option[+A]{
   }
 
   //4.4 Write a function sequence that combines a list of Options into one Option containing a list of all the Some values in original list.
-  def sequence[A](a: List[Option[A]]): Option[List[A]] = ???
+  def sequence[A](a: List[Option[A]]): Option[List[A]] = a match {
+    case Nil => Some(Nil)
+    case x :: xs => x flatMap(x2 => (sequence(xs) map (x2 :: _)))
+  }
 }
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
