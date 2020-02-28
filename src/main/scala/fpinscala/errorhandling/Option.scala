@@ -49,13 +49,22 @@ sealed trait Option[+A] {
    //} yield f(av, bv)
 
   //4.4 Write a function sequence that combines a list of Options into one Option containing a list of all the Some values in original list.
-  def sequence[A](a: List[Option[A]]): Option[List[A]] = a match {
-    case Nil => Some(Nil)
-    case x :: xs => x flatMap(x2 => (sequence(xs) map (x2 :: _)))
-  }
+  def sequence[A](a: List[Option[A]]): Option[List[A]] =
+    a.foldRight[Option[List[A]]](Some(List.empty[A]): Option[List[A]]) { (h: Option[A], t: Option[List[A]]) => map2(h, t)( _ :: _)}
+    //a match {
+      //case Nil => Some(Nil)
+      //case x :: xs => x flatMap(x2 => (sequence(xs) map (x2 :: _)))
+    //}
+    //transverse(a)(i => i)
 
   //4.5 Implement this function
-  def transverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = ???
+  def transverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] =
+    a.foldRight[Option[List[B]]](Some(Nil))((h: A, t: Option[List[B]]) => map2(f(h),t)(_ :: _))
+    //a match {
+      //case Nil => Some(Nil)
+      //case h :: t => map2(f(h), transverse(t)(f))(_ :: _)
+    //}
+    //sequence(a.map(f))
 }
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
