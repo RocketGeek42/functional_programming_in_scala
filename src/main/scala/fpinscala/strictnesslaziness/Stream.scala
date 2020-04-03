@@ -22,7 +22,6 @@ sealed trait Stream[+A] {
       go(this, List()).reverse
     }
 
-
     //5.2 Write the function take(n) for returning the first n elements of a Stream, and drop(n) for skipping the first n elements of a Stream.
     def take(n: Int): Stream[A] = this match {
       case Cons(h, t) if n > 1 => cons(h(), t().take(n - 1))
@@ -68,15 +67,18 @@ sealed trait Stream[+A] {
       go(0,1)
     }
 
-
     //5.11 Write a more general stream-building function called unfold.  It takes an initial state, and a function for producing both the next state and the next value in the generated stream
-    def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = ???
+    def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] =
+      f(z) match {
+        case Some((h,s)) => cons(h, unfold(s)(f))
+        case None => empty
+      }
 
 
     //5.12 Write fibs, from, constant and ones in terms of unfold.
 
     //5.13 use unfold to implement map, take, takeWhile, zipWith and zipAll.  The zipAll function should continue the traversal as long as either stream has more elements.
-    def zipAll[B](s2: Stream[B]): Stream[(Option[A], Option[B])] - ???
+    def zipAll[B](s2: Stream[B]): Stream[(Option[A], Option[B])] = ???
 
 
   }
