@@ -20,6 +20,20 @@ sealed trait Stream[+A] {
   //5.6 Implement headOption using foldRight.
 
 
+  //5.7 Implement map, filter, append, and flatMap using foldRight. The append method should be non-strict in its argument
+  def map[B](f: A => B): Stream[B] = ???
+  def filter(pred: A => Boolean): Stream[A] = ???
+  def append[AA >: A](as: Stream[AA]): Stream[AA] = ???
+  def flatMap[B](f: A => Stream[B]): Stream[B] = ???
+
+  //5.8 Generalize ones slightly to the function constant, which returns an infinite Stream of a given value
+  def constant[A](a: A): Stream[A] = ???
+
+
+  //5.9 Write a function that generates an infinite stream of integers, starting from n, then n + 1, n+ 2 and so on.
+  def from(n: Int): Stream[Int] = ???
+
+
 }
 case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
