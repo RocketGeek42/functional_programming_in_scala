@@ -1,7 +1,14 @@
 sealed trait Stream[+A] {
 
   //5.1 Write a function to convert a Stream to a List
-  def toList: List[A] = ???
+  def toList: List[A] = {
+    @annotation.tailrec
+    def go(s: Stream[A], acc: List[A]): List[A] = s match {
+      case Cons(h, t) => go(t(), h() :: acc)
+      case _ => acc
+    }
+    go(this, List()).reverse
+  }
 
 
   //5.2 Write the function take(n) for returning the first n elements of a Stream, and drop(n) for skipping the first n elements of a Stream.
@@ -32,6 +39,16 @@ sealed trait Stream[+A] {
 
   //5.9 Write a function that generates an infinite stream of integers, starting from n, then n + 1, n+ 2 and so on.
   def from(n: Int): Stream[Int] = ???
+
+
+  //5.10 Write a function fib that generates the infinite stream of Fibonacci numbers: 0, 1, 1, 2, 3, 5, 8, and so on.
+
+
+  //5.11 Write a more general stream-building function called unfold.  It takes an initial state, and a function for producing both the next state and the next value in the generated stream
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = ???
+
+
+  //5.12 Write fibs, from, constant and ones in terms of unfold.
 
 
 }
