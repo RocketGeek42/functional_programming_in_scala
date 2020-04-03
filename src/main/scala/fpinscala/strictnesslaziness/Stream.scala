@@ -62,6 +62,11 @@ sealed trait Stream[+A] {
 
 
     //5.10 Write a function fib that generates the infinite stream of Fibonacci numbers: 0, 1, 1, 2, 3, 5, 8, and so on.
+    val fibs: Stream[Int] = {
+      def go(f0: Int, f1: Int): Stream[Int] =
+        cons(f0, go(f1, f0+f1))
+      go(0,1)
+    }
 
 
     //5.11 Write a more general stream-building function called unfold.  It takes an initial state, and a function for producing both the next state and the next value in the generated stream
@@ -69,6 +74,9 @@ sealed trait Stream[+A] {
 
 
     //5.12 Write fibs, from, constant and ones in terms of unfold.
+
+    //5.13 use unfold to implement map, take, takeWhile, zipWith and zipAll.  The zipAll function should continue the traversal as long as either stream has more elements.
+    def zipAll[B](s2: Stream[B]): Stream[(Option[A], Option[B])] - ???
 
 
   }
