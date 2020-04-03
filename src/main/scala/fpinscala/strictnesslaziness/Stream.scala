@@ -74,8 +74,11 @@ sealed trait Stream[+A] {
         case None => empty
       }
 
-
     //5.12 Write fibs, from, constant and ones in terms of unfold.
+    def fibsViaUnfold: Stream[Int] = unfold((0,1)){ case (f0, f1) => Some((f0,(f1, f0+f1)))}
+    def fromViaUnFold(n: Int): Stream[Int] = unfold(n)(n => Some((n,n+1)))
+    def constantViaUnFold[A](a: A): Stream[A] = unfold(a)(_ => Some((a,a)))
+    def onesViaUnfold: Stream[Int] = unfold(1)(_ => Some((1,1)))
 
     //5.13 use unfold to implement map, take, takeWhile, zipWith and zipAll.  The zipAll function should continue the traversal as long as either stream has more elements.
     def zipAll[B](s2: Stream[B]): Stream[(Option[A], Option[B])] = ???
