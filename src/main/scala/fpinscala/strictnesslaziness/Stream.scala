@@ -32,10 +32,16 @@ sealed trait Stream[+A] {
     def drop(n: Int): Stream[A] = ???
 
     //5.3 Write the function takeWhile for returning all starting elements of a Stream that match the given predicate.
-    def takeWhile(p: A => Boolean): Stream[A] = ???
+    def takeWhile(p: A => Boolean): Stream[A] =
+      foldRight(Stream.empty[A]) { (a, b) =>
+        if(p(a)) Stream.cons(a, b) else Empty
+      }
 
     //5.4 Implement forAll, which checks that all elements in the Stream match a given predicate.  Your implementation should terminate the traversal as soon as it encounters a nonmatching value.
-    def forAll(p: A => Boolean): Boolean = ???
+    def forAll(p: A => Boolean): Boolean = this match {
+      case Cons(h, t) => if(p(h())) t().forAll(p) else false
+      case _ => true
+    }
 
     //5.5 Use foldRight to implement takeWhile
 
@@ -44,9 +50,15 @@ sealed trait Stream[+A] {
 
 
     //5.7 Implement map, filter, append, and flatMap using foldRight. The append method should be non-strict in its argument
-    def map[B](f: A => B): Stream[B] = ???
+    def map[B](f: A => B): Stream[B] =
+      foldRight(Stream.empty[B]) { (a, bs) =>
+        Stream.cons(f(a), bs)
+      }
 
-    def filter(pred: A => Boolean): Stream[A] = ???
+    def filter(pred: A => Boolean): Stream[A] =
+      foldRight(Stream.empty[A]) { (a, b) =>
+        if (prod(a)) Stream.cons(a, b) else b
+      }
 
     def append[AA >: A](as: Stream[AA]): Stream[AA] = ???
 
@@ -81,6 +93,26 @@ sealed trait Stream[+A] {
     def onesViaUnfold: Stream[Int] = unfold(1)(_ => Some((1,1)))
 
     //5.13 use unfold to implement map, take, takeWhile, zipWith and zipAll.  The zipAll function should continue the traversal as long as either stream has more elements.
+    def mapUnfold[B](f: A => B): Stream[B] =
+      unfold(this) {
+        case Cons(h,t) => Some((f(h()), t()))
+        case _ => None
+    }
+    def takeViaUnfold(n: Int):Stream[A] =
+      unfold((this, n)) {
+        case (Cons(h,t), 1) => Some((h(), (empty, 0)))
+        case (Cons(h,t), n) if n > 1 => Some((h(), (t(), n-1)))
+        case _ => None
+      }
+    def takeWhileUnfold(p: A => Boolean): Stream[A] =
+      Stream.unfold(this) {
+        case Cons(h, t) =>
+          val appliedPredicate = p(h())
+          val output = h()
+          val nextState = t()
+
+          if (appliedPredicate) Some((output, nextState))else None
+      }
     def zipAll[B](s2: Stream[B]): Stream[(Option[A], Option[B])] = ???
 
 
