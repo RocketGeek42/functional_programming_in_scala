@@ -29,10 +29,23 @@ sealed trait Stream[+A] {
       case _ => empty
     }
 
-    def drop(n: Int): Stream[A] = ???
+    def drop(n: Int): Stream[A] = this match {
+      case Cons(_, t) if n > 0 => t().drop(n-1)
+      case _ => this
+    }
 
-    //5.3 Write the function takeWhile for returning all starting elements of a Stream that match the given predicate.
-    def takeWhile(p: A => Boolean): Stream[A] =
+    //5.3 Write the function takeWhile for returning all starting elements of a Stream that match the given predicate. and 5.5 Implement takeWhile using foldRight
+    def takeWhile(p: A => Boolean): Stream[A] = this match {
+      case Cons(h, t) => if n > 0 cons(h(), t().take(n-1)) else empty
+      case _ => empty
+    }
+
+    def foldRight[B](z: => B)(f: (A, => B) => B): B = this match {
+      case Cons(h, t) => f(h(), t().foldRight(z)(f))
+      case _ => z
+    }
+
+    def takeWhileFoldRight(p: A => Boolean): Stream[A] =
       foldRight(Stream.empty[A]) { (a, b) =>
         if(p(a)) Stream.cons(a, b) else Empty
       }
@@ -42,9 +55,6 @@ sealed trait Stream[+A] {
       case Cons(h, t) => if(p(h())) t().forAll(p) else false
       case _ => true
     }
-
-    //5.5 Use foldRight to implement takeWhile
-
 
     //5.6 Implement headOption using foldRight.
 
