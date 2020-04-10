@@ -30,13 +30,13 @@ sealed trait Stream[+A] {
     }
 
     def drop(n: Int): Stream[A] = this match {
-      case Cons(_, t) if n > 0 => t().drop(n-1)
+      case Cons(_, t) if n > 0 => t().drop(n - 1)
       case _ => this
     }
 
     //5.3 Write the function takeWhile for returning all starting elements of a Stream that match the given predicate. and 5.5 Implement takeWhile using foldRight
     def takeWhile(p: A => Boolean): Stream[A] = this match {
-      case Cons(h, t) => if n > 0 cons(h(), t().take(n-1)) else empty
+      case Cons(h, t) => if n > 0 cons(h(), t().take(n - 1)) else empty
       case _ => empty
     }
 
@@ -80,18 +80,16 @@ sealed trait Stream[+A] {
     }
 
     //5.8 Generalize ones slightly to the function constant, which returns an infinite Stream of a given value
-    def constant[A](a: A): Stream[A] = ???
-
+    def constant[A](a: A): Stream[A] = Stream.cons(a, constant(a))
 
     //5.9 Write a function that generates an infinite stream of integers, starting from n, then n + 1, n+ 2 and so on.
-    def from(n: Int): Stream[Int] = ???
-
+    def from(n: Int): Stream[Int] = Streamcons(n, from(n + 1))
 
     //5.10 Write a function fib that generates the infinite stream of Fibonacci numbers: 0, 1, 1, 2, 3, 5, 8, and so on.
     val fibs: Stream[Int] = {
       def go(f0: Int, f1: Int): Stream[Int] =
-        cons(f0, go(f1, f0+f1))
-      go(0,1)
+        cons(f0, go(f1, f0 + f1))
+      go(0, 1)
     }
 
     //5.11 Write a more general stream-building function called unfold.  It takes an initial state, and a function for producing both the next state and the next value in the generated stream
@@ -128,7 +126,18 @@ sealed trait Stream[+A] {
 
           if (appliedPredicate) Some((output, nextState))else None
       }
-    def zipAll[B](s2: Stream[B]): Stream[(Option[A], Option[B])] = ???
+    def zipWith[B, C](s2: Stream[B])(f: (A, B) => C): Stream[C] =
+      unfold((this, s2)) {
+        case (Cons(h1, t1), Cons(h2, t2)) => Some((f(h1(), h2()), (t1(), t2())))
+        case _ => None
+      }
+    def zipAll[B](s2: Stream[B]): Stream[(Option[A], Option[B])] =
+      unfold((this, s2)) {
+        case (Cons(h1, t1), Cons(h2, t2)) => Some(((Some(h1())), (Some(h2())), ((t1(), t2()))))
+        case (Cons(h1, t1), Empty) => Some(((Some(h1())), None), ((t1(), empty)))
+        case (Empty, Cons(h2, t2)) => Some(((None, (Some(h2())))), ((empty, t2())))
+        case _ => None
+      }
 
 
   }
