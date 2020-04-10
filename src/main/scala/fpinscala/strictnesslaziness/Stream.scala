@@ -70,9 +70,13 @@ sealed trait Stream[+A] {
         if (prod(a)) Stream.cons(a, b) else b
       }
 
-    def append[AA >: A](as: Stream[AA]): Stream[AA] = ???
+    def append[AA >: A](as: Stream[AA]): Stream[AA] = {
+      foldRight(a)((h, t) => cons(h, t))
+    }
 
-    def flatMap[B](f: A => Stream[B]): Stream[B] = ???
+    def flatMap[B](f: A => Stream[B]): Stream[B] = {
+      foldRight(empty[B])((h, t) => f(h) append t)
+    }
 
     //5.8 Generalize ones slightly to the function constant, which returns an infinite Stream of a given value
     def constant[A](a: A): Stream[A] = ???
