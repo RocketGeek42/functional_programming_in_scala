@@ -138,6 +138,13 @@ sealed trait Stream[+A] {
         case (Empty, Cons(h2, t2)) => Some(((None, (Some(h2())))), ((empty, t2())))
         case _ => None
       }
+    //5.14 Implement startsWith using functions you've written.  It should check if one Stream is a prefix of another.
+    def startsWith[A](s: Stream[A]): Boolean = ???
+
+    //5.15 Implement tails using unfold.
+    def tails: Stream[Stream[A]] = ???
+
+    //5.16 Generalize tails to the function scanRight, which is like a foldRight that returns the stream of the intermediate results.
 
 
   }
