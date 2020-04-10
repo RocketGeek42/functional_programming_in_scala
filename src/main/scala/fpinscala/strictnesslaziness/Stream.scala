@@ -57,7 +57,8 @@ sealed trait Stream[+A] {
     }
 
     //5.6 Implement headOption using foldRight.
-
+    def headOptionFoldRight: Option[A] =
+      foldRight[Option[A]](None)((a, _) => Some(a))
 
     //5.7 Implement map, filter, append, and flatMap using foldRight. The append method should be non-strict in its argument
     def map[B](f: A => B): Stream[B] =
