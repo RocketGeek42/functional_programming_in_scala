@@ -65,4 +65,28 @@ object Stream {
     foldRight(Stream.empty[A]) { (a, b) =>if (p(a)) Stream.cons(a, b) else b
     }
 
+  //5.6 Implement headOption using foldRight
+  def headOptionFoldRight = ???
+
+  //5.7 Implement map, filter, append, and flatMap using foldRight.
+  def mapfoldRight = ???
+
+  def filterFoldRight = ???
+
+  def appendFoldRight = ???
+
+  def flatMapFoldRight = ???
+
+  //5.8 Generalize ones slightly to the function constant, which returns an infinite Stream of a given value
+  def constant[A](a: A): Stream[A] = ???
+
+  //5.9 Write a function that generates an infinite stream of integers, starting from n, then n + 1, n + 2, and so on.
+  def from(n: Int): Stream[Int] = ???
+
+  //5.10 Write a function fibs that generates the infinite stream of Fibonacci numbers
+  def fibs = ???
+
+  //5.11 Write a more general stream-building function called unfold
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = ???
+
 }
