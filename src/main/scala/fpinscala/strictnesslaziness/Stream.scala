@@ -87,13 +87,25 @@ object Stream {
   def from(n: Int): Stream[Int] = ???
 
   //5.10 Write a function fibs that generates the infinite stream of Fibonacci numbers
-  def fibs = ???
+  val fibs = {
+    def go(f0: Int, f1: Int): Stream[Int] =
+      cons(f0, go(f1, f0 + f1))
+
+    go(0, 1)
+  }
 
   //5.11 Write a more general stream-building function called unfold
   def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = ???
 
   //5.12 Write fibs, from, constant, and ones in terms of unfold
-  def fibsUnfold = ???
+  def fibsUnfold: Stream[Int] =
+    unfold((0, 1)) {
+      case (a, b) =>
+        val output = a
+        val nextA = b
+        val nextB = a + b
+        Some((output, (nextA, nextB)))
+    }
 
   def fromUnfold = ???
 
