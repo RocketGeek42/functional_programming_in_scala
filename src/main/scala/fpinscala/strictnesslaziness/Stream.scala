@@ -114,4 +114,13 @@ object Stream {
   //5.14 Implement startsWith using functions you've written
   def startsWith[A](s: Stream[A]): Boolean = ???
 
+  //5.15 Implement tails using unfold.
+  def tails: Stream[Stream[A]] = ???
+
+  def hasSubsequence[A](s: Stream[A]): Boolean =
+    tails exists (_ startsWith s)
+
+  //5.16 Generalize tails to the function scanRight
+  def tailsScanRight = ???
+
 }
