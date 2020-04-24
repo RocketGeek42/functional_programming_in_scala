@@ -66,7 +66,8 @@ object Stream {
     }
 
   //5.6 Implement headOption using foldRight
-  def headOptionFoldRight = ???
+  def headOptionFoldRight: Option[A] =
+    foldRight(None: Option[A])(h, _) => Some(h))
 
   //5.7 Implement map, filter, append, and flatMap using foldRight.
   def mapfoldRight[B](f: A => B): Stream[B] =
@@ -74,11 +75,14 @@ object Stream {
       Stream.cons(f(a), bs)
     }
 
-  def filterFoldRight = ???
+  def filterFoldRight(f: A => Boolean): Stream[A] =
+    foldRight(empty[B])((h, t) => if (f(h)) cons(h, t) else t)
 
-  def appendFoldRight = ???
+  def append[B >: A](s: => Stream[B]): Stream[B] =
+    foldRight(s)((h, t) => cons(h, t))
 
-  def flatMapFoldRight = ???
+  def flatMapFoldRight[B](f: A => Stream[B]): Stream[B] =
+    foldRight(empty[B])((h, t) => f(h) append t)
 
   //5.8 Generalize ones slightly to the function constant, which returns an infinite Stream of a given value
   def constant[A](a: A): Stream[A] = ???
