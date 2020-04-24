@@ -69,7 +69,10 @@ object Stream {
   def headOptionFoldRight = ???
 
   //5.7 Implement map, filter, append, and flatMap using foldRight.
-  def mapfoldRight = ???
+  def mapfoldRight[B](f: A => B): Stream[B] =
+    foldRight(Stream.empty[B]) { (a, bs) =>
+      Stream.cons(f(a), bs)
+    }
 
   def filterFoldRight = ???
 
@@ -99,7 +102,14 @@ object Stream {
   def onesUnfold = ???
 
   //5.13 Use unfold to implement map, take, takeWhile, zipWith and zipAll.
-  def mapUnfold = ???
+  def mapUnfold[B](f: A => B): Stream[B] =
+    Stream.unfold(this) {
+      case Cons(h, t) =>
+        val output: B = f(h())
+        val nextState: Stream[A] = t()
+        Some((output, nextState))
+      case Empty = None
+    }
 
   def takeUnfold = ???
 
