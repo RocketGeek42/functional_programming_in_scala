@@ -103,7 +103,11 @@ object Stream {
   }
 
   //5.11 Write a more general stream-building function called unfold
-  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = ???
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] =
+    f(z) match {
+      case Some((h, s)) => cons(h, unfold(s)(f))
+      case None => empty
+    }
 
   //5.12 Write fibs, from, constant, and ones in terms of unfold
   def fibsUnfold: Stream[Int] =
