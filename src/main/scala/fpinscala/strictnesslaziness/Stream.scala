@@ -89,4 +89,29 @@ object Stream {
   //5.11 Write a more general stream-building function called unfold
   def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = ???
 
+  //5.12 Write fibs, from, constant, and ones in terms of unfold
+  def fibsUnfold = ???
+
+  def fromUnfold = ???
+
+  def constantUnfold = ???
+
+  def onesUnfold = ???
+
+  //5.13 Use unfold to implement map, take, takeWhile, zipWith and zipAll.
+  def mapUnfold = ???
+
+  def takeUnfold = ???
+
+  def takeWhileUnfold = ???
+
+  def zipWithUnfold = ???
+
+  def zipAll[B](s2: Stream[B]): Stream[(Option[A], Option[B])] = ???
+
+  def zipAllUnfold = ???
+
+  //5.14 Implement startsWith using functions you've written
+  def startsWith[A](s: Stream[A]): Boolean = ???
+
 }
