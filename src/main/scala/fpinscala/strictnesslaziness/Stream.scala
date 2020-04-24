@@ -119,11 +119,13 @@ object Stream {
         Some((output, (nextA, nextB)))
     }
 
-  def fromUnfold = ???
+  def fromUnfold(n: Int) =
+    unfold(n)(n => Some((n, n + 1)))
 
-  def constantUnfold = ???
+  def constantUnfold[A](a: A) =
+    unfold(a)(_ => Some((a, a)))
 
-  def onesUnfold = ???
+  val onesUnfold = unfold(1)(_ => Some((1, 1)))
 
   //5.13 Use unfold to implement map, take, takeWhile, zipWith and zipAll.
   def mapUnfold[B](f: A => B): Stream[B] =
