@@ -85,10 +85,14 @@ object Stream {
     foldRight(empty[B])((h, t) => f(h) append t)
 
   //5.8 Generalize ones slightly to the function constant, which returns an infinite Stream of a given value
-  def constant[A](a: A): Stream[A] = ???
+  def constant[A](a: A): Stream[A] = {
+    lazy val tail: Stream[A] = Cons(() => a, () => tail)
+    tail
+  }
 
   //5.9 Write a function that generates an infinite stream of integers, starting from n, then n + 1, n + 2, and so on.
-  def from(n: Int): Stream[Int] = ???
+  def from(n: Int): Stream[Int] =
+    cons(n, from(n + 1))
 
   //5.10 Write a function fibs that generates the infinite stream of Fibonacci numbers
   val fibs = {
