@@ -60,4 +60,9 @@ object Stream {
     case Empty => true
   }
 
+  //5.5 Use foldRight to implement takeWhile
+  def takeWhileFoldRight(p: A => Boolean): Stream[A] =
+    foldRight(Stream.empty[A]) { (a, b) =>if (p(a)) Stream.cons(a, b) else b
+    }
+
 }
