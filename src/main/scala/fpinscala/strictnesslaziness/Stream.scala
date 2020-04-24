@@ -39,11 +39,25 @@ object Stream {
   }
 
   //5.3 Write the function takeWhile for returning all starting elements of a Stream that match the given predicate
-  def takeWhile(p: A => Boolean): Stream[A] = ???
+  def takeWhile(p: A => Boolean): Stream[A] = this match {
+    case Cons(h: A, t: Stream[A]) => if (p(h))
+    case Empty => Empty
+  }
 
   def foldRight[B](z: => B)(f: (A, => B) => B): B = this match {
     case Cons(h, t) => f(h(), t().foldRight(z)(f))
     case _ => z
+  }
+
+  def exists(p: A => Boolean): Boolean = this match {
+    case Cons(h, t) => p(h()) || t().exists(p)
+    case _ => false
+  }
+
+  //5.4 Implement forAll, which checks that all elements in the Stream match a given predicate.
+  def forAll(p: A => Boolean): Boolean  = this match {
+    case Cons(h, t) => if (p(h())) t().forAll(p) else false
+    case Empty => true
   }
 
 }
